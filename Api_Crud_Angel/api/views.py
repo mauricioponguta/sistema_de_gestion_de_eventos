@@ -30,9 +30,9 @@ class SedeViewSet(viewsets.ModelViewSet):
     queryset = Sede.objects.all()
     serializer_class = SedeSerializer
     filter_backends = [OrderingFilter, SearchFilter]
-    ordering_fields = ['nombre_sede']
-    ordering = ['nombre_sede']
-    search_fields = ['nombre_sede', 'direccion']
+    ordering_fields = ['nombre', 'ciudad', 'capacidad', 'fecha_creacion']
+    ordering = ['nombre']
+    search_fields = ['nombre', 'direccion', 'ciudad', 'email']
 
 
 # Crud de tabla Organizador (GET, POST, PUT, DELETE)
@@ -40,9 +40,9 @@ class OrganizadorViewSet(viewsets.ModelViewSet):
     queryset = Organizador.objects.all()
     serializer_class = OrganizadorSerializer
     filter_backends = [OrderingFilter, SearchFilter]
-    ordering_fields = ['nombre']
+    ordering_fields = ['nombre', 'apellido', 'empresa', 'fecha_creacion']
     ordering = ['nombre']
-    search_fields = ['nombre', 'correo', 'telefono']
+    search_fields = ['nombre', 'apellido', 'email', 'empresa']
 
 
 # Crud de tabla Evento (GET, POST, PUT, DELETE)
@@ -50,9 +50,9 @@ class EventoViewSet(viewsets.ModelViewSet):
     queryset = Evento.objects.all()
     serializer_class = EventoSerializer
     filter_backends = [OrderingFilter, SearchFilter]
-    ordering_fields = ['nombre_evento', 'fecha_inicio', 'fecha_fin']
-    ordering = ['nombre_evento']
-    search_fields = ['nombre_evento', 'descripcion']
+    ordering_fields = ['nombre', 'fecha_inicio', 'fecha_fin', 'capacidad_maxima']
+    ordering = ['nombre']
+    search_fields = ['nombre', 'descripcion']
 
 
 # Crud de tabla Asistente (GET, POST, PUT, DELETE)
@@ -60,27 +60,29 @@ class AsistenteViewSet(viewsets.ModelViewSet):
     queryset = Asistente.objects.all()
     serializer_class = AsistenteSerializer
     filter_backends = [OrderingFilter, SearchFilter]
-    ordering_fields = ['nombre']
+    ordering_fields = ['nombre', 'apellido', 'fecha_creacion']
     ordering = ['nombre']
-    search_fields = ['nombre', 'correo', 'telefono']
+    search_fields = ['nombre', 'apellido', 'email', 'documento_identidad']
 
 
 # Crud de tabla Inscripcion (GET, POST, PUT, DELETE)
 class InscripcionViewSet(viewsets.ModelViewSet):
     queryset = Inscripcion.objects.all()
     serializer_class = InscripcionSerializer
-    filter_backends = [OrderingFilter]
-    ordering_fields = ['fecha_inscripcion']
-    ordering = ['-fecha_inscripcion']
+    filter_backends = [OrderingFilter, SearchFilter]
+    ordering_fields = ['fecha_creacion', 'estado']
+    ordering = ['-fecha_creacion']
+    search_fields = ['estado']
 
 
 # Crud de tabla Pago (GET, POST, PUT, DELETE)
 class PagoViewSet(viewsets.ModelViewSet):
     queryset = Pago.objects.all()
     serializer_class = PagoSerializer
-    filter_backends = [OrderingFilter]
-    ordering_fields = ['monto', 'fecha_pago']
-    ordering = ['-fecha_pago']
+    filter_backends = [OrderingFilter, SearchFilter]
+    ordering_fields = ['monto', 'fecha_creacion', 'estado']
+    ordering = ['-fecha_creacion']
+    search_fields = ['estado', 'metodo_pago', 'referencia']
 
 
 # Crud de tabla Conferencia (GET, POST, PUT, DELETE)
@@ -88,9 +90,9 @@ class ConferenciaViewSet(viewsets.ModelViewSet):
     queryset = Conferencia.objects.all()
     serializer_class = ConferenciaSerializer
     filter_backends = [OrderingFilter, SearchFilter]
-    ordering_fields = ['titulo', 'hora_inicio']
+    ordering_fields = ['titulo', 'fecha_hora_inicio', 'duracion_minutos']
     ordering = ['titulo']
-    search_fields = ['titulo', 'descripcion']
+    search_fields = ['titulo', 'descripcion', 'ponente', 'sala']
 
 
 # Crud de tabla Patrocinador (GET, POST, PUT, DELETE)
@@ -98,6 +100,6 @@ class PatrocinadorViewSet(viewsets.ModelViewSet):
     queryset = Patrocinador.objects.all()
     serializer_class = PatrocinadorSerializer
     filter_backends = [OrderingFilter, SearchFilter]
-    ordering_fields = ['nombre']
+    ordering_fields = ['nombre', 'nivel', 'monto_aporte', 'fecha_creacion']
     ordering = ['nombre']
-    search_fields = ['nombre']
+    search_fields = ['nombre', 'contacto', 'email_contacto', 'nivel']
