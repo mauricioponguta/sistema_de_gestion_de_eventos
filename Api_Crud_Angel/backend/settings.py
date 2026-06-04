@@ -133,3 +133,21 @@ REST_FRAMEWORK = {
     'DEFAULT_VERSION': 'v1',
     'ALLOWED_VERSIONS': ['v1', 'v2'],
 }
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'archivo': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'operaciones.log',
+        },
+    },
+    'loggers': {
+        'api.views': {
+            'handlers': ['archivo'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
