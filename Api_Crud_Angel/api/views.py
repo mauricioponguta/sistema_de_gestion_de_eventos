@@ -25,8 +25,27 @@ from .serializers import (
 )
 
 
+# Clase base para auditoría
+class AuditoriaViewSet(viewsets.ModelViewSet):
+
+    def perform_create(self, serializer):
+        usuario = self.request.data.get('usuario_creacion')
+
+        serializer.save(
+            usuario_creacion=usuario,
+            usuario_modificacion=usuario
+        )
+
+    def perform_update(self, serializer):
+        usuario = self.request.data.get('usuario_modificacion')
+
+        serializer.save(
+            usuario_modificacion=usuario
+        )
+
+
 # Crud de tabla Sede (GET, POST, PUT, DELETE)
-class SedeViewSet(viewsets.ModelViewSet):
+class SedeViewSet(AuditoriaViewSet):
     queryset = Sede.objects.all()
     serializer_class = SedeSerializer
     filter_backends = [OrderingFilter, SearchFilter]
@@ -36,7 +55,7 @@ class SedeViewSet(viewsets.ModelViewSet):
 
 
 # Crud de tabla Organizador (GET, POST, PUT, DELETE)
-class OrganizadorViewSet(viewsets.ModelViewSet):
+class OrganizadorViewSet(AuditoriaViewSet):
     queryset = Organizador.objects.all()
     serializer_class = OrganizadorSerializer
     filter_backends = [OrderingFilter, SearchFilter]
@@ -46,7 +65,7 @@ class OrganizadorViewSet(viewsets.ModelViewSet):
 
 
 # Crud de tabla Evento (GET, POST, PUT, DELETE)
-class EventoViewSet(viewsets.ModelViewSet):
+class EventoViewSet(AuditoriaViewSet):
     queryset = Evento.objects.all()
     serializer_class = EventoSerializer
     filter_backends = [OrderingFilter, SearchFilter]
@@ -56,7 +75,7 @@ class EventoViewSet(viewsets.ModelViewSet):
 
 
 # Crud de tabla Asistente (GET, POST, PUT, DELETE)
-class AsistenteViewSet(viewsets.ModelViewSet):
+class AsistenteViewSet(AuditoriaViewSet):
     queryset = Asistente.objects.all()
     serializer_class = AsistenteSerializer
     filter_backends = [OrderingFilter, SearchFilter]
@@ -66,7 +85,7 @@ class AsistenteViewSet(viewsets.ModelViewSet):
 
 
 # Crud de tabla Inscripcion (GET, POST, PUT, DELETE)
-class InscripcionViewSet(viewsets.ModelViewSet):
+class InscripcionViewSet(AuditoriaViewSet):
     queryset = Inscripcion.objects.all()
     serializer_class = InscripcionSerializer
     filter_backends = [OrderingFilter, SearchFilter]
@@ -76,7 +95,7 @@ class InscripcionViewSet(viewsets.ModelViewSet):
 
 
 # Crud de tabla Pago (GET, POST, PUT, DELETE)
-class PagoViewSet(viewsets.ModelViewSet):
+class PagoViewSet(AuditoriaViewSet):
     queryset = Pago.objects.all()
     serializer_class = PagoSerializer
     filter_backends = [OrderingFilter, SearchFilter]
@@ -86,7 +105,7 @@ class PagoViewSet(viewsets.ModelViewSet):
 
 
 # Crud de tabla Conferencia (GET, POST, PUT, DELETE)
-class ConferenciaViewSet(viewsets.ModelViewSet):
+class ConferenciaViewSet(AuditoriaViewSet):
     queryset = Conferencia.objects.all()
     serializer_class = ConferenciaSerializer
     filter_backends = [OrderingFilter, SearchFilter]
@@ -96,7 +115,7 @@ class ConferenciaViewSet(viewsets.ModelViewSet):
 
 
 # Crud de tabla Patrocinador (GET, POST, PUT, DELETE)
-class PatrocinadorViewSet(viewsets.ModelViewSet):
+class PatrocinadorViewSet(AuditoriaViewSet):
     queryset = Patrocinador.objects.all()
     serializer_class = PatrocinadorSerializer
     filter_backends = [OrderingFilter, SearchFilter]
