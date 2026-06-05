@@ -1,3 +1,4 @@
+from rest_framework import filters, viewsets
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
@@ -29,6 +30,15 @@ from .serializers import (
     ConferenciaSerializer,
     PatrocinadorSerializer,
 )
+from .logging_mixins import OperationLoggingMixin
+from .responses import StandardResponseMixin
+
+
+class BaseApiViewSet(OperationLoggingMixin, StandardResponseMixin, viewsets.ModelViewSet):
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = '__all__'
+    ordering = ['-fecha_creacion']
+
 
 
 # Clase base para auditoría
@@ -51,6 +61,7 @@ class AuditoriaViewSet(viewsets.ModelViewSet):
 
 
 # Crud de tabla Sede (GET, POST, PUT, DELETE)
+class SedeViewSet(BaseApiViewSet):
 class SedeViewSet(
     SoftDeleteMixin,
     viewsets.ModelViewSet
@@ -65,6 +76,7 @@ class SedeViewSet(AuditoriaViewSet):
     search_fields = ['nombre', 'direccion', 'ciudad', 'email']
 
 # Crud de tabla Organizador (GET, POST, PUT, DELETE)
+class OrganizadorViewSet(BaseApiViewSet):
 class OrganizadorViewSet(
     SoftDeleteMixin,
     viewsets.ModelViewSet
@@ -134,6 +146,7 @@ class OrganizadorViewSet(AuditoriaViewSet):
 
 
 # Crud de tabla Evento (GET, POST, PUT, DELETE)
+class EventoViewSet(BaseApiViewSet):
 class EventoViewSet(AuditoriaViewSet):
     queryset = Evento.objects.all()
     serializer_class = EventoSerializer
@@ -144,6 +157,7 @@ class EventoViewSet(AuditoriaViewSet):
 
 
 # Crud de tabla Asistente (GET, POST, PUT, DELETE)
+class AsistenteViewSet(BaseApiViewSet):
 class AsistenteViewSet(AuditoriaViewSet):
     queryset = Asistente.objects.all()
     serializer_class = AsistenteSerializer
@@ -154,6 +168,7 @@ class AsistenteViewSet(AuditoriaViewSet):
 
 
 # Crud de tabla Inscripcion (GET, POST, PUT, DELETE)
+class InscripcionViewSet(BaseApiViewSet):
 class InscripcionViewSet(AuditoriaViewSet):
     queryset = Inscripcion.objects.all()
     serializer_class = InscripcionSerializer
@@ -164,6 +179,7 @@ class InscripcionViewSet(AuditoriaViewSet):
 
 
 # Crud de tabla Pago (GET, POST, PUT, DELETE)
+class PagoViewSet(BaseApiViewSet):
 class PagoViewSet(AuditoriaViewSet):
     queryset = Pago.objects.all()
     serializer_class = PagoSerializer
@@ -174,6 +190,7 @@ class PagoViewSet(AuditoriaViewSet):
 
 
 # Crud de tabla Conferencia (GET, POST, PUT, DELETE)
+class ConferenciaViewSet(BaseApiViewSet):
 class ConferenciaViewSet(AuditoriaViewSet):
     queryset = Conferencia.objects.all()
     serializer_class = ConferenciaSerializer
@@ -184,6 +201,9 @@ class ConferenciaViewSet(AuditoriaViewSet):
 
 
 # Crud de tabla Patrocinador (GET, POST, PUT, DELETE)
+class PatrocinadorViewSet(BaseApiViewSet):
+    queryset = Patrocinador.objects.all()
+    serializer_class = PatrocinadorSerializer
 class PatrocinadorViewSet(AuditoriaViewSet):
     queryset = Patrocinador.objects.all()
     serializer_class = PatrocinadorSerializer
