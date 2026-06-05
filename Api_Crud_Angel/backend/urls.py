@@ -63,4 +63,6 @@ urlpatterns += [
         TokenRefreshView.as_view(),
         name='token_refresh'
     ),
+    path('api/v1/', include('api.urls')),
+    path('api/v2/', include('api.urls')),
 ]
