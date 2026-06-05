@@ -14,6 +14,7 @@ from datetime import timedelta
 from pathlib import Path
 from decouple import config
 
+
 DEBUG = config('DEBUG', cast=bool)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -113,6 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
@@ -170,8 +172,39 @@ LOGGING = {
     'loggers': {
         'api.operations': {
             'handlers': ['operation_file'],
+ 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS':
+        'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    
+REST_FRAMEWORK = {
+    'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
+    'DEFAULT_VERSION': 'v1',
+    'ALLOWED_VERSIONS': ['v1', 'v2'],
+}
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'archivo': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'operaciones.log',
+        },
+    },
+    'loggers': {
+        'api.views': {
+            'handlers': ['archivo'],
             'level': 'INFO',
             'propagate': False,
         },
     },
+}
 }

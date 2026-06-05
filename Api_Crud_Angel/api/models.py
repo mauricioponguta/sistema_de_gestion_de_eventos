@@ -1,8 +1,16 @@
 from django.db import models
 
+class AuditoriaModel(models.Model):
+    usuario_creacion = models.CharField(max_length=100, null=True, blank=True)
+    usuario_modificacion = models.CharField(max_length=100, null=True, blank=True)
 
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    fecha_modificacion = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
 # Modelo tabla Sede
-class Sede(models.Model):
+class Sede(AuditoriaModel):
     id_sede = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=200)
     direccion = models.CharField(max_length=300)
@@ -11,8 +19,6 @@ class Sede(models.Model):
     telefono = models.CharField(max_length=20, null=True, blank=True)
     email = models.CharField(max_length=150, null=True, blank=True)
     activo = models.BooleanField(default=True)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
-    fecha_modificacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.nombre
@@ -22,7 +28,7 @@ class Sede(models.Model):
 
 
 # Modelo tabla Organizador
-class Organizador(models.Model):
+class Organizador(AuditoriaModel):
     id_organizador = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=200)
     apellido = models.CharField(max_length=200)
@@ -30,8 +36,6 @@ class Organizador(models.Model):
     telefono = models.CharField(max_length=20, null=True, blank=True)
     empresa = models.CharField(max_length=200, null=True, blank=True)
     activo = models.BooleanField(default=True)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
-    fecha_modificacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.nombre} {self.apellido}"
@@ -41,7 +45,7 @@ class Organizador(models.Model):
 
 
 # Modelo tabla Evento
-class Evento(models.Model):
+class Evento(AuditoriaModel):
     id_evento = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=300)
     descripcion = models.TextField(null=True, blank=True)
@@ -59,8 +63,6 @@ class Evento(models.Model):
         db_column='id_organizador'
     )
     activo = models.BooleanField(default=True)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
-    fecha_modificacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.nombre
@@ -70,7 +72,7 @@ class Evento(models.Model):
 
 
 # Modelo tabla Asistente
-class Asistente(models.Model):
+class Asistente(AuditoriaModel):
     id_asistente = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=200)
     apellido = models.CharField(max_length=200)
@@ -78,8 +80,6 @@ class Asistente(models.Model):
     telefono = models.CharField(max_length=20, null=True, blank=True)
     documento_identidad = models.CharField(max_length=50, null=True, blank=True)
     activo = models.BooleanField(default=True)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
-    fecha_modificacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.nombre} {self.apellido}"
@@ -89,7 +89,7 @@ class Asistente(models.Model):
 
 
 # Modelo tabla Inscripcion
-class Inscripcion(models.Model):
+class Inscripcion(AuditoriaModel):
     id_inscripcion = models.AutoField(primary_key=True)
     id_evento = models.ForeignKey(
         Evento,
@@ -103,8 +103,6 @@ class Inscripcion(models.Model):
     )
     estado = models.CharField(max_length=20, default='Pendiente')
     activo = models.BooleanField(default=True)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
-    fecha_modificacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"Inscripcion {self.id_inscripcion}"
@@ -114,7 +112,7 @@ class Inscripcion(models.Model):
 
 
 # Modelo tabla Pago
-class Pago(models.Model):
+class Pago(AuditoriaModel):
     id_pago = models.AutoField(primary_key=True)
     id_inscripcion = models.ForeignKey(
         Inscripcion,
@@ -126,8 +124,6 @@ class Pago(models.Model):
     estado = models.CharField(max_length=20, default='Pendiente')
     referencia = models.CharField(max_length=100, null=True, blank=True)
     activo = models.BooleanField(default=True)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
-    fecha_modificacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"Pago {self.id_pago}"
@@ -137,7 +133,7 @@ class Pago(models.Model):
 
 
 # Modelo tabla Conferencia
-class Conferencia(models.Model):
+class Conferencia(AuditoriaModel):
     id_conferencia = models.AutoField(primary_key=True)
     titulo = models.CharField(max_length=300)
     descripcion = models.TextField(null=True, blank=True)
@@ -151,8 +147,6 @@ class Conferencia(models.Model):
         db_column='id_evento'
     )
     activo = models.BooleanField(default=True)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
-    fecha_modificacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.titulo
@@ -162,7 +156,7 @@ class Conferencia(models.Model):
 
 
 # Modelo tabla Patrocinador
-class Patrocinador(models.Model):
+class Patrocinador(AuditoriaModel):
     id_patrocinador = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=200)
     logo = models.CharField(max_length=255, null=True, blank=True)
@@ -177,8 +171,6 @@ class Patrocinador(models.Model):
         db_column='id_evento'
     )
     activo = models.BooleanField(default=True)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
-    fecha_modificacion = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.nombre
