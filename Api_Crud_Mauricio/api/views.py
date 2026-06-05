@@ -21,10 +21,11 @@ from .serializers import (
     ConferenciaSerializer,
     PatrocinadorSerializer,
 )
+from .logging_mixins import OperationLoggingMixin
 from .responses import StandardResponseMixin
 
 
-class BaseApiViewSet(StandardResponseMixin, viewsets.ModelViewSet):
+class BaseApiViewSet(OperationLoggingMixin, StandardResponseMixin, viewsets.ModelViewSet):
     filter_backends = [filters.OrderingFilter]
     ordering_fields = '__all__'
     ordering = ['-fecha_creacion']

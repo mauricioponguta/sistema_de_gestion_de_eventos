@@ -130,6 +130,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+LOGS_DIR = BASE_DIR / 'logs'
+LOGS_DIR.mkdir(exist_ok=True)
+
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'api.responses.standard_exception_handler',
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -144,4 +147,31 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'operation': {
+            'format': '[{asctime}] {levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'operation_file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': LOGS_DIR / 'operations.log',
+            'encoding': 'utf-8',
+            'formatter': 'operation',
+        },
+    },
+    'loggers': {
+        'api.operations': {
+            'handlers': ['operation_file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
 }
